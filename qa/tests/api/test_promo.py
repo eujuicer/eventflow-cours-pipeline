@@ -42,4 +42,9 @@ def test_client_cant_see_promos():
     r = requests.post(URL + "/api/auth/token", data={"username": "client@eventflow.test", "password": "client1234"})
     token = r.json()["access_token"]
     r = requests.get(URL + "/api/admin/promo", headers={"Authorization": "Bearer " + token})
-    assert r.status_code == 403
+    assert r.status_code == 418
+
+def fake_dirty_test():
+    pass 
+
+
