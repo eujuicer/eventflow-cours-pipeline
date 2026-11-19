@@ -1,0 +1,38 @@
+# Même version que le venv et Docker
+target-version = "py312"
+# Lisible côte à côte dans une revue de PR
+line-length = 120
+# Rapports générés, pas du code
+extend-exclude = ["reports"]
+
+
+[format]
+docstring-code-format = true
+
+[lint]
+# Le jeu par défaut de Ruff 0.17 est déjà large (B, UP, SIM, I, DTZ...).
+extend-select = [
+    "S",    # sécurité : secrets en dur, requests sans timeout
+    "PT",   # bonnes pratiques pytest
+    "T20",  # print() oubliés
+    "N",    # nommage PEP 8
+    "A",    # pas de variable qui masque un mot réservé (id, type...)
+    "ARG",  # arguments reçus mais jamais utilisés
+    "ERA",  # code commenté laissé en place
+    "TID",  # imports interdits (banned-api)
+]
+ignore = ["N812"]  # alias idiomatique Selenium : import ... as EC
+
+[lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "ARG001"]  # assert, mdp de recette, fixtures
+"conftest.py" = ["S101", "S105", "S106"]         # assert : vérifie que l'appli tourne
+"utils/factories.py" = ["S101", "S107"]          # assert sur le statut HTTP ; mdp de recette
+"tests/performance/locustfile.py" = ["S311", "T201"]  # random ; print = sortie console de Locust
+
+# Dette connue : à corriger dans une autre PR, ce ne sont pas des cas normaux
+"tests/ui/playwright/test_checkout_e2e.py" = ["TID251"]  # time.sleep à remplacer par une attente explicite
+"tests/ui/selenium_backoffice/**" = ["TID251"]           # idem dans les Page Objects Selenium
+"tests/api/test_promo.py" = ["S113", "T201", "A001", "E722", "S110"]  # relu à l'étape 3, corrigé dans fix/test-promo
+
+[lint.flake8-tidy-imports.banned-api]
+"time.sleep".msg = "Attente fixe = test lent et flaky. Utiliser une attente explicite."

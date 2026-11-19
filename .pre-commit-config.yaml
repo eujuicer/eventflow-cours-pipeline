@@ -1,0 +1,13 @@
+# Hooks pre-commit : Ruff vérifie et formate le code avant chaque commit
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    # Même version que Ruff installé dans le venv
+    rev: v0.17.5
+    hooks:
+      # Vérifie la qualité du code et corrige ce qui peut l'être
+      - id: ruff-check
+        args: [--fix]
+        files: ^qa/
+      # Formate le code
+      - id: ruff-format
+        files: ^qa/
