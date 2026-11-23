@@ -1,0 +1,8 @@
+{
+  "name": "eventflow-qa-tools",
+  "private": true,
+  "description": "Outils Node de la CI QA (rapport Allure), versions verrouillees par package-lock.json",
+  "devDependencies": {
+    "allure": "3.33.0"
+  }
+}

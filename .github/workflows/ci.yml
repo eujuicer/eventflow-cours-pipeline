@@ -63,7 +63,9 @@ jobs:
       - name: Rapport Allure
         if: always()
         working-directory: qa
-        run: npx --yes allure@3.33.0 generate reports/allure-results -o reports/allure-report
+        run: |
+          npm ci --ignore-scripts
+          ./node_modules/.bin/allure generate reports/allure-results -o reports/allure-report
 
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         if: always()
