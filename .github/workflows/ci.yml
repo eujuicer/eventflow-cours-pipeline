@@ -48,12 +48,12 @@ jobs:
       - name: Tests UI Playwright
         working-directory: qa
         run: pytest tests/ui/playwright -n 2 --alluredir=reports/allure-results
-        continue-on-error: true
+        if: success() || failure()
 
       - name: Tests back-office Selenium
         working-directory: qa
         run: pytest tests/ui/selenium_backoffice --alluredir=reports/allure-results --output reports/selenium
-        continue-on-error: true
+        if: success() || failure()
 
       - name: Rapport Allure
         if: always()
