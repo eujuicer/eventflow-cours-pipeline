@@ -1,0 +1,16 @@
+﻿Finding:     CLIENT_SECRET = "REDACTED"
+Secret:      REDACTED
+RuleID:      generic-api-key
+Entropy:     3.853777
+File:        qa/utils/xray_export.py
+Line:        11
+Commit:      cc428027178076c6b0fe5f125ffbf8b2a0ef4d5e
+Author:      Michaël Person
+Email:       michael.person@cognitic.be
+Date:        2026-10-20T09:09:16Z
+Fingerprint: cc428027178076c6b0fe5f125ffbf8b2a0ef4d5e:qa/utils/xray_export.py:generic-api-key:11
+Link:        https://github.com/eujuicer/eventflow-cours-pipeline/blob/cc428027178076c6b0fe5f125ffbf8b2a0ef4d5e/qa/utils/xray_export.py#L11
+
+2:29PM INF 39 commits scanned.
+2:29PM INF scanned ~214593 bytes (214.59 KB) in 261ms
+2:29PM WRN leaks found: 1
