@@ -1,18 +1,47 @@
-# eventflow
+# EventFlow-QA
 
-> Plateforme de billetterie événementielle — support pédagogique (fil rouge) de la formation Testeur QA.
+[![CI](https://github.com/eujuicer/eventflow-cours-pipeline/actions/workflows/ci.yml/badge.svg?branch=eventflow-qa)](https://github.com/eujuicer/eventflow-cours-pipeline/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/release/eujuicer/eventflow-cours-pipeline)](https://github.com/eujuicer/eventflow-cours-pipeline/releases)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 
-![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1?logo=postgresql&logoColor=white)
-![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white)
-[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=eujuicer_eventflow-cours-pipeline&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=eujuicer_eventflow-cours-pipeline)
+Automated test project (API, UI, security, load) for EventFlow, a ticketing web application, run in a GitHub Actions pipeline with a SonarQube Cloud analysis. Built during the QA Tester training (Bruxelles Formation / BStorm).
+
+Release [v1.0.0](https://github.com/eujuicer/eventflow-cours-pipeline/releases/tag/v1.0.0) · test project details in [`qa/`](qa/README.md) · [CI runs](https://github.com/eujuicer/eventflow-cours-pipeline/actions) · [who owns what](#droits-rights)
+
+> The application documentation below is course material, written in French.
+
+## What the test suite covers
+
+| Area | Tools | Where |
+|---|---|---|
+| API (authentication, catalogue, business rules, promo codes, JSON Schema contracts) | PyTest, `requests` | `qa/tests/api` |
+| Security (IDOR, JWT, access control, SQL injection) | PyTest | `qa/tests/api/test_security.py` |
+| Database consistency (payments, reservation expiry, stock) | PyTest, PostgreSQL | `qa/tests/api/test_db_consistency.py` |
+| Web UI (customer journey, network mocks) | Playwright | `qa/tests/ui/playwright` |
+| Back-office UI (Page Object Model) | Selenium | `qa/tests/ui/selenium_backoffice` |
+| Load (flash sale) | Locust | `qa/tests/performance` |
+
+## Getting started
+
+Requires Docker, Python 3.12 and Git.
+
+```bash
+git clone https://github.com/eujuicer/eventflow-cours-pipeline.git && cd eventflow-cours-pipeline
+docker compose up -d --build
+cd qa && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt && playwright install chromium && pytest tests/api -n auto
+```
+
+Set `SEED_BUGS=true` to start the application with the intentional bugs B1 to B12 (some tests then fail on purpose). On Windows, activate the environment with `.venv\Scripts\activate`. Full instructions: [qa/README.md](qa/README.md).
+
+## Pipeline
+
+[`ci.yml`](.github/workflows/ci.yml) starts the application with Docker Compose, runs the API, Playwright and Selenium tests and publishes the Allure report as an artifact. [`sonar.yml`](.github/workflows/sonar.yml) runs the SonarQube Cloud analysis.
+
+## The EventFlow application
 
 eventflow est une application web réaliste à trois tiers (React, FastAPI, PostgreSQL) qui permet à des organisateurs de mettre en vente des billets pour leurs événements, et au public de réserver et payer en ligne. Elle sert de fil rouge à la formation Testeur QA : les stagiaires l'explorent, la testent et l'industrialisent tout au long du programme, du test manuel jusqu'à la chaîne CI/CD.
 
 La version actuelle implémente le comportement attendu. Les bugs intentionnels du fil rouge (B1 à B12) seront ajoutés ensuite, activables via une variable d'environnement, afin de servir les exercices de chaque module.
-
 ## Sommaire
 
 - [eventflow](#eventflow)
@@ -34,6 +63,7 @@ La version actuelle implémente le comportement attendu. Les bugs intentionnels 
   - [Projet de tests EventFlow-QA](#projet-de-tests-eventflow-qa)
   - [Structure du dépôt](#structure-du-dépôt)
   - [Dépannage](#dépannage)
+  - [Droits (Rights)](#droits-rights)
 
 ## Fonctionnalités
 
@@ -315,4 +345,11 @@ Connexion impossible avec une erreur 500 mentionnant un email invalide : les adr
 
 Réservation affichée comme « expirée » dès la page de paiement : signe d'une date interprétée dans le mauvais fuseau. L'API renvoie des dates en UTC explicite (suffixe `Z`) et le frontend les parse comme UTC. Conservez ce contrat si vous ajoutez des dates.
 
-Colonnes de profil (`phone`, `avatar`) absentes sur une base ancienne : le backend les ajoute automatiquement au démarrage via une migration idempotente (`ALTER TABLE ... ADD COLUMN`). Un redémarrage du 
+Colonnes de profil (`phone`, `avatar`) absentes sur une base ancienne : le backend les ajoute automatiquement au démarrage via une migration idempotente (`ALTER TABLE ... ADD COLUMN`). Un redémarrage du backend suffit.
+
+
+## Droits (Rights)
+
+**Belongs to BStorm / Michaël Person (training authors):** the EventFlow application and the base test project delivered during the training (`backend/`, `frontend/`, `db/`, `docs/`, and `qa/` as delivered). This fork contains no `LICENSE` file: all rights on that material stay with its authors, and it is used here for learning only.
+
+**Mine (commits by `eujuicer`):** the SonarQube Cloud analysis in the pipeline (`sonar-project.properties`, `sonar.yml`), the removal of committed secrets and the `qa/.env.example` file, test fixes, and the `v1.0.0` release. Quality tooling (Ruff, pre-commit) and the security review of the pipeline are proposed in open pull requests. The full list is in the [commit history](https://github.com/eujuicer/eventflow-cours-pipeline/commits/eventflow-qa).
