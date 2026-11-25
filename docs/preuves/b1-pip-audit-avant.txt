@@ -1,0 +1,9 @@
+Found 6 known vulnerabilities in 1 package
+Name     Version ID              Fix Versions
+-------- ------- --------------- ------------
+requests 2.31.0  PYSEC-2026-1873 2.32.0
+requests 2.31.0  PYSEC-2026-1872 2.32.4
+requests 2.31.0  PYSEC-2026-2275 2.33.0
+requests 2.31.0  PYSEC-2026-1873 2.32.0
+requests 2.31.0  PYSEC-2026-1872 2.32.4
+requests 2.31.0  PYSEC-2026-2275 2.33.0

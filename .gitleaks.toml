@@ -1,0 +1,24 @@
+# .gitleaks.toml : configuration gitleaks du dépôt EventFlow-QA
+# gitleaks lit ce fichier tout seul depuis la racine du dépôt
+
+title = "EventFlow-QA"
+
+# Garder TOUTES les règles par défaut (~200 formats de jetons).
+# Sans cette ligne, le fichier remplace les règles au lieu de les compléter.
+[extend]
+useDefault = true
+
+# Exclusions : uniquement des dossiers générés, absents du dépôt Git.
+# Règle d'or : on n'exclut jamais un fichier du dépôt pour faire taire l'outil.
+[[allowlists]]
+description = "Dossiers generes localement (environnements, dependances, caches, rapports)"
+paths = [
+# Environnements Python et dépendances JavaScript
+'''(?:^|[\/])\.?venv[\/]''',
+'''(?:^|[\/])node_modules[\/]''',
+# Caches des outils
+'''(?:^|[\/])(?:__pycache__|\.pytest_cache|\.ruff_cache|\.mypy_cache)[\/]''',
+# Rapports de tests et artefacts de build
+'''(?:^|[\/])qa[\/]reports[\/]''',
+'''(?:^|[\/])(?:htmlcov|allure-results|test-results|playwright-report|dist|build)[\/]''',
+]
