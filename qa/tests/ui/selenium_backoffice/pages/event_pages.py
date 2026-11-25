@@ -38,7 +38,7 @@ class EventManagePage(BasePage):
         self.type(self.field("Prix (EUR)"), str(price_eur))
         self.type(self.field("Quota"), str(quota))
         self.click(self.ADD_CAT)
-        self.wait.until(lambda d: name in self.category_names())
+        self.wait.until(lambda _: name in self.category_names())
 
     def category_names(self):
         return self.texts(self.CATEGORY_ROWS, "td")
